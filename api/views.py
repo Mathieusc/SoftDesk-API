@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import MultipleChoiceField
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Project, Issue
+from .models import Project, Issue, Contributor
 from .serializers import ProjectSerializer, IssueListSerializer, IssueDetailSerializer
 
 
@@ -14,11 +14,18 @@ class AdminProjectViewset(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-class ProjectView(ReadOnlyModelViewSet):
+class ProjectView(ModelViewSet):
     serializer_class = ProjectSerializer
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Project.objects.all()
+
+    def perform_create(self, serializer):
+        project = serializer.save()
+        Contributor.objects.create(
+            user_id=self.request.user, project_id=project, role="Créateur"
+        )
 
 
 class IssueView(ReadOnlyModelViewSet):

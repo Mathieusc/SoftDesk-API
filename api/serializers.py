@@ -34,3 +34,15 @@ class IssueDetailSerializer(ModelSerializer):
             "assignee",
             "project",
         ]
+
+
+class CommentSerializer(ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["id", "description", "author", "created_time"]
+
+
+class ContributorSerializer(ModelSerializer):
+    class Meta:
+        model = Contributor
+        fields = ["id", "role"]

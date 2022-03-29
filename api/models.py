@@ -24,7 +24,9 @@ class Project(models.Model):
         on_delete=models.CASCADE,
         related_name="author_project",
     )
-    # contributor = models.ManyToManyField(User, through="Contributors")
+    contribution = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, through="Contributor"
+    )
 
     def __str__(self):
         return self.title
@@ -64,12 +66,10 @@ class Issue(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="author_issue",
     )
-    assignee = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING
-    )
+    assignee = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(to=Project, on_delete=models.CASCADE)
 
     def __str__(self):
