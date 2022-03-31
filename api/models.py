@@ -38,7 +38,7 @@ class Contributor(models.Model):
     role = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.user
+        return self.user.email
 
 
 class Issue(models.Model):
@@ -87,4 +87,4 @@ class Comment(models.Model):
     issue = models.ForeignKey(to=Issue, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.description[50:]
+        return self.description[:50]

@@ -45,4 +45,4 @@ class CommentSerializer(ModelSerializer):
 class ContributorSerializer(ModelSerializer):
     class Meta:
         model = Contributor
-        fields = ["id", "role"]
+        fields = ["id", "user", "role"]
