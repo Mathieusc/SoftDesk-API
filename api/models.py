@@ -19,13 +19,8 @@ class Project(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=1000)
     type = models.CharField(max_length=128, choices=TYPE_CHOICES, blank=False)
-    author = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="author_project",
-    )
-    contribution = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, through="Contributor"
+    contributor = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, through="Contributor", related_name="contributions"
     )
 
     def __str__(self):
@@ -33,9 +28,17 @@ class Project(models.Model):
 
 
 class Contributor(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    role = models.CharField(max_length=128)
+    AUTHOR = "AUTHOR"
+    CONTRIBUTOR = "CONTRIBUTOR"
+
+    CHOICES = [(AUTHOR, "Auteur"), (CONTRIBUTOR, "Contributeur")]
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
+    )
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, null=True, related_name="contributor_project"
+    )
+    role = models.CharField(max_length=30, choices=CHOICES, verbose_name="role")
 
     def __str__(self):
         return self.user.email
@@ -52,11 +55,11 @@ class Issue(models.Model):
     IN_PROGRESS = "IN PROGRESS"
     DONE = "DONE"
 
-    PRIORITY_CHOICES = [(LOW, "low"), (MEDIUM, "medium"), (HIGH, "high")]
+    PRIORITY_CHOICES = [(LOW, "Faible"), (MEDIUM, "Moyenne"), (HIGH, "Élevée")]
 
-    TAG_CHOICES = [(BUG, "bug"), (IMPROVE, "improve"), (TASK, "task")]
+    TAG_CHOICES = [(BUG, "Bug"), (IMPROVE, "Amélioration"), (TASK, "Tâche")]
 
-    STATUS_CHOICES = [(TO_DO, "to do"), (IN_PROGRESS, "in progress"), (DONE, "done")]
+    STATUS_CHOICES = [(TO_DO, "À faire"), (IN_PROGRESS, "En cours"), (DONE, "Terminé")]
 
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=1000)
@@ -64,16 +67,15 @@ class Issue(models.Model):
     tag = models.CharField(max_length=128, choices=TAG_CHOICES)
     status = models.CharField(max_length=128, choices=STATUS_CHOICES)
     created_time = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(
+    author_user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="author_issue",
+        related_name="author",
     )
-    assignee = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    assignee = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
+    )
     project = models.ForeignKey(to=Project, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
 
 
 class Comment(models.Model):

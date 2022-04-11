@@ -57,7 +57,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         When send POST request to register endpoint,
         it calls RegisterUserSerializer's create method which saves user object.
         """
-        user = User.objects.create(
+        user = User(
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             email=validated_data["email"],

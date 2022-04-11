@@ -3,10 +3,24 @@ from django.contrib.auth.models import User
 from .models import Project, Issue, Comment, Contributor
 
 
-class ProjectSerializer(ModelSerializer):
+class ContributorSerializer(ModelSerializer):
+    class Meta:
+        model = Contributor
+        fields = ["id", "role", "project", "user"]
+
+
+class ProjectListSerializer(ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "title", "description", "type", "author"]
+        fields = ["id", "title", "description", "type", "contributor"]
+
+
+class ProjectDetailSerializer(ModelSerializer):
+    contributor_project = ContributorSerializer(many=True)
+
+    class Meta:
+        model = Project
+        fields = ["id", "title", "description", "type", "contributor_project"]
 
 
 class IssueListSerializer(ModelSerializer):
@@ -18,7 +32,7 @@ class IssueListSerializer(ModelSerializer):
 class IssueDetailSerializer(ModelSerializer):
 
     # Add in paramater (many=True) if multiple instances
-    project = ProjectSerializer()
+    # project = ProjectDetailSerializer()
 
     class Meta:
         model = Issue
@@ -30,7 +44,7 @@ class IssueDetailSerializer(ModelSerializer):
             "tag",
             "status",
             "created_time",
-            "author",
+            "author_user",
             "assignee",
             "project",
         ]
@@ -40,9 +54,3 @@ class CommentSerializer(ModelSerializer):
     class Meta:
         model = Comment
         fields = ["id", "description", "author", "created_time"]
-
-
-class ContributorSerializer(ModelSerializer):
-    class Meta:
-        model = Contributor
-        fields = ["id", "user", "role"]
