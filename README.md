@@ -7,9 +7,9 @@ API made to track issues for multiple platforms (iOS, ANDROID, WEB) and assign u
 All endpoints are explained in the documentation below.
 
 ## SoftDesk Documentation
-```
+
 https://documenter.getpostman.com/view/19912950/Uyr7HyZP
-```
+
 
 Main features :
 - User Authentication (using JWT)
