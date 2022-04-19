@@ -27,7 +27,7 @@ class ProjectView(ModelViewSet):
 
     serializer_class = ProjectListSerializer
     detail_serializer_class = ProjectDetailSerializer
-    permission_classes = [IsAuthorProject]
+    permission_classes = [IsAuthenticated, IsAuthorProject]
 
     def get_queryset(self):
         """
@@ -129,7 +129,7 @@ class IssueView(ModelViewSet):
 
     serializer_class = IssueListSerializer
     detail_serializer_class = IssueDetailSerializer
-    permission_classes = [IsAuthorIssue]
+    permission_classes = [IsAuthenticated, IsAuthorIssue, IsContributor]
 
     def get_queryset(self):
         """
@@ -372,7 +372,7 @@ class CommentView(ModelViewSet):
     """
 
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated, IsAuthorComment]
+    permission_classes = [IsAuthenticated, IsAuthorComment, IsContributor]
 
     def get_queryset(self):
         """
