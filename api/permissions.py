@@ -1,5 +1,5 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
-from .models import Project, Contributor, Comment, Issue
+from rest_framework.permissions import BasePermission
+from .models import Contributor, Comment, Issue
 
 owner_methods = ("PUT", "DELETE")
 contrib_methods = ("POST", "GET")
@@ -10,7 +10,7 @@ class IsAuthorProject(BasePermission):
     Access only for project's author
     """
 
-    message = "Vous n'êtes pas auteur du projet. Vous n'avez pas l'autorisation de modifier/supprimer."
+    message = "Seul l'auteur a l'autorisation de modifier/supprimer un projet."
 
     def has_permission(self, request, view):
         if view.action in ["create", "list", "retrieve"]:
@@ -26,6 +26,7 @@ class IsAuthorProject(BasePermission):
             )
             if not author:
                 return False
+            return True
 
 
 class IsAuthorIssue(BasePermission):
@@ -33,7 +34,7 @@ class IsAuthorIssue(BasePermission):
     Access only for Issue's author
     """
 
-    message = "Vous n'êtes pas auteur du problème. Vous n'avez pas l'autorisation de modifier/supprimer."
+    message = "Seul l'auteur a l'autorisation de modifier/supprimer un problème."
 
     def has_permission(self, request, view):
         if view.action in ["create", "list", "retrieve"]:
@@ -55,7 +56,7 @@ class IsAuthorComment(BasePermission):
     Access only for Comment's author
     """
 
-    message = "Vous n'êtes pas auteur du problème. Vous n'avez pas l'autorisation de modifier/supprimer."
+    message = "Seul l'auteur a l'autorisation de modifier/supprimer un commentaire."
 
     def has_permission(self, request, view):
         if view.action in ["create", "list", "retrieve"]:
@@ -74,7 +75,7 @@ class IsContributor(BasePermission):
     Access only for project's contributor
     """
 
-    message = "Vous n'êtes pas contributeur du projet. Vous n'avez pas l'autorisation d'y accéder."
+    message = "Seuls les contributeurs du projet ont l'autorisation d'y accéder."
 
     def has_permission(self, request, view):
 

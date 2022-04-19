@@ -1,5 +1,4 @@
 from rest_framework.serializers import ModelSerializer
-from django.contrib.auth.models import User
 from .models import Project, Issue, Comment, Contributor
 
 
@@ -30,10 +29,6 @@ class IssueListSerializer(ModelSerializer):
 
 
 class IssueDetailSerializer(ModelSerializer):
-
-    # Add in paramater (many=True) if multiple instances
-    # project = ProjectDetailSerializer()
-
     class Meta:
         model = Issue
         fields = [

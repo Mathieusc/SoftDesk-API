@@ -1,7 +1,7 @@
 from django.db import models
 from django_project import settings
 
-# Create your models here.
+
 class Project(models.Model):
 
     BACKEND = "BACK-END"

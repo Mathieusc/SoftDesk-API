@@ -8,7 +8,6 @@ from api.views import (
     ContributorView,
     ProjectView,
     IssueView,
-    AdminProjectViewset,
 )
 
 router = routers.SimpleRouter()
@@ -20,8 +19,6 @@ router_2.register("issues", IssueView, basename="issues")
 
 router_3 = routers.SimpleRouter()
 router_3.register("comments", CommentView, basename="comments")
-
-router.register("admin/projects", AdminProjectViewset, basename="admin-project")
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
