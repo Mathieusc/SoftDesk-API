@@ -52,18 +52,13 @@ Use the existing db.sqlite3 file for testing purposes OR delete it and setup the
 
 Create the database
 ```
+python manage.py makemigrations
 python manage.py migrate
 ```
 
 Create the admin account
 ```
 python manage.py createsuperuser
-```
-
-or Use the existing admin account
-```
-username : mathieu
-password : oc-admin
 ```
 
 
