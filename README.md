@@ -21,7 +21,7 @@ Main features :
 
 ## Installation
 
-Python (version 3.8.10)
+Python (version used: 3.8.10)
 * [Download Python](https://www.python.org/downloads/) 
 
 Download the application
