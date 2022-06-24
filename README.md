@@ -48,7 +48,6 @@ Install dependecies
 ```
 pip install -r requirements.txt
 ```
-Use the existing db.sqlite3 file for testing purposes OR delete it and setup the project from scrath
 
 Create the database
 ```
