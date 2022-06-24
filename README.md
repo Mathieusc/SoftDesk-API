@@ -60,6 +60,11 @@ Create the admin account
 python manage.py createsuperuser
 ```
 
+Run the server
+```
+python manage.py runserver
+```
+
 
 ## Created with
 Python version 3.8.10
