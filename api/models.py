@@ -38,7 +38,9 @@ class Contributor(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, null=True, related_name="contributor_project"
     )
-    role = models.CharField(max_length=30, choices=CHOICES, verbose_name="role")
+    role = models.CharField(
+        max_length=30, choices=CHOICES, verbose_name="role"
+    )  # add default role if you want
 
     def __str__(self):
         return self.user.email

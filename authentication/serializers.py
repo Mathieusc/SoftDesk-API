@@ -14,9 +14,9 @@ class UserSerializer(serializers.ModelSerializer):
 class RegisterUserSerializer(serializers.ModelSerializer):
     """
     Register new user
-    attributes : email is required and should be unique amongst all user
-                 password is write only, required and should be valid
-                 password_confirm is write only and required
+    attributes : - email is required and should be unique ;
+                 - password is write only, required and should be valid ;
+                 - password_confirm is write only and required.
     """
 
     email = serializers.EmailField(
@@ -47,15 +47,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         Verifiy that password fields are the same.
         """
         if attrs["password"] != attrs["password_confirm"]:
-            raise serializers.ValidationError(
-                {"password": "Votre mot de passe ne correspond pas."}
-            )
+            raise serializers.ValidationError({"password": "Passwords do not match."})
         return attrs
 
     def create(self, validated_data):
         """
-        When send POST request to register endpoint,
-        it calls RegisterUserSerializer's create method which saves user object.
+        POST request to save the user object.
         """
         user = User(
             first_name=validated_data["first_name"],

@@ -1,108 +1,71 @@
 from rest_framework.permissions import BasePermission
 from .models import Contributor, Comment, Issue
 
-owner_methods = ("PUT", "DELETE")
-contrib_methods = ("POST", "GET")
-
 
 class IsAuthorProject(BasePermission):
     """
-    Access only for project's author
+    Author's project permissions:
+        - Only the author can update or delete a project.
     """
 
-    message = "Seul l'auteur a l'autorisation de modifier/supprimer un projet."
+    message = "Only the author can update or delete a project."
 
-    def has_permission(self, request, view):
-        if view.action in ["create", "list", "retrieve"]:
-            return True
-        if view.action in ["update", "destroy"]:
-            user = request.user
-            if not "project_id" in view.kwargs:
-                project_id = view.kwargs["pk"]
-            else:
-                project_id = view.kwargs["project_id"]
+    def has_object_permission(self, request, view, obj):
+        if request.method in ["PUT", "PATCH", "DELETE"]:
+            project_id = view.kwargs["pk"]
+            user_id = request.user.id
             author = Contributor.objects.filter(
-                project=project_id, user=user.id, role="AUTHOR"
+                project=project_id, user=user_id, role="AUTHOR"
             )
-            if not author:
+            if not author.exists():
                 return False
-            return True
+        return True
 
 
 class IsAuthorIssue(BasePermission):
     """
-    Access only for Issue's author
+    Author's issue permissions:
+        - Only the author can update or delete an issue
     """
 
-    message = "Seul l'auteur a l'autorisation de modifier/supprimer un problème."
-
-    def has_permission(self, request, view):
-        if view.action in ["create", "list", "retrieve"]:
-            return True
-        if view.action in ["update", "destroy"]:
+    def has_object_permission(self, request, view, obj):
+        if request.method in ["PUT", "PATCH", "DELETE"]:
             user = request.user
-            if not "issue_id" in view.kwargs:
-                issue_id = view.kwargs["pk"]
-            else:
-                issue_id = view.kwargs["issue_id"]
+            issue_id = view.kwargs["pk"]
             author = Issue.objects.filter(id=issue_id, author_user=user.id)
-            if not author:
+            if not author.exists():
                 return False
-            return True
+        return True
 
 
 class IsAuthorComment(BasePermission):
     """
-    Access only for Comment's author
+    Author's comments permissions:
+        - Only the author of a comment can update or delete it.
     """
 
-    message = "Seul l'auteur a l'autorisation de modifier/supprimer un commentaire."
-
-    def has_permission(self, request, view):
-        if view.action in ["create", "list", "retrieve"]:
-            return True
-        if view.action in ["update", "destroy"]:
+    def has_object_permission(self, request, view, obj):
+        if request.method in ["PUT", "PATCH", "DELETE"]:
             user = request.user
             comment_id = view.kwargs["pk"]
             author = Comment.objects.filter(id=comment_id, author_user=user.id)
-            if not author:
+            if not author.exists():
                 return False
-            return True
+        return True
 
 
 class IsContributor(BasePermission):
     """
-    Access only for project's contributor
+    Contributors permissions:
+        - The contributors can only read and create issues or comments if they are assigned to the project.
     """
 
-    message = "Seuls les contributeurs du projet ont l'autorisation d'y accéder."
-
     def has_permission(self, request, view):
-
         user = request.user
         project_id = view.kwargs["project_id"]
 
         contributor = Contributor.objects.filter(project=project_id, user=user.id)
-
-        if not contributor:
-            return False
-        else:
-            return True
-
-
-class HasProjectPermission(BasePermission):
-    def has_permission(self, request, view):
-        if (
-            Contributor.objects.filter(user=request.user)
-            .filter(project=view.kwargs["project_id"])
-            .exists()
-        ):
-            return True
-        else:
-            return False
-
-    def has_object_permission(self, request, view, obj):
-        if request.method in owner_methods:
-            return obj.author == request.user
-        else:
-            return False
+        if request.method in ["GET", "POST"]:
+            if not contributor.exists():
+                return False
+        return True
