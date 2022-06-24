@@ -44,7 +44,7 @@ Windows :
 .\env\Scripts\Activate
 ```
 
-Install dependecies
+Install dependencies
 ```
 pip install -r requirements.txt
 ```
