@@ -32,7 +32,7 @@ cd openclassrooms_project_10/
 
 Create a virutal environment
 ```
-python -m venv env
+python3 -m venv env
 ```
 
 Linux :
