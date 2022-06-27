@@ -6,7 +6,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
 
 from .models import User
-from .serializers import UserSerializer, RegisterUserSerializer
+from .serializers import RegisterUserSerializer
 
 
 class RegisterView(generics.CreateAPIView):
