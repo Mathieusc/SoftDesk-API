@@ -52,7 +52,6 @@ pip install -r requirements.txt
 
 Create the database
 ```
-python manage.py makemigrations
 python manage.py migrate
 ```
 
