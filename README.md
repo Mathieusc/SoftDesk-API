@@ -21,7 +21,7 @@ Main features :
 
 ## Installation
 
-Python (version 3.8.10)
+Python (version used: 3.8.10)
 * [Download Python](https://www.python.org/downloads/) 
 
 Download the application
@@ -44,14 +44,14 @@ Windows :
 .\env\Scripts\Activate
 ```
 
-Install dependecies
+Install dependencies
 ```
 pip install -r requirements.txt
 ```
-Use the existing db.sqlite3 file for testing purposes OR delete it and setup the project from scrath
 
 Create the database
 ```
+python manage.py makemigrations
 python manage.py migrate
 ```
 
@@ -60,10 +60,9 @@ Create the admin account
 python manage.py createsuperuser
 ```
 
-or Use the existing admin account
+Run the server
 ```
-username : mathieu
-password : oc-admin
+python manage.py runserver
 ```
 
 
