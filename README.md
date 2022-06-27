@@ -27,6 +27,7 @@ Python (version used: 3.8.10)
 Download the application
 ```
 git clone https://github.com/Mathieusc/openclassrooms_project_10.git
+cd openclassrooms_project_10/
 ```
 
 Create a virutal environment
